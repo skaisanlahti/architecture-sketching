@@ -1,5 +1,11 @@
-import { ObservableTodoForm } from "./interfaces/ObservableTodoForm";
-import { PresentableTodoForm } from "./interfaces/PresentableTodoForm";
+import { BehaviorSubject } from "rxjs";
+import { ObservableTodoForm } from "./TodoFormSource";
+
+export interface PresentableTodoForm {
+  task: BehaviorSubject<string>;
+  taskError: BehaviorSubject<string>;
+  submitTask: () => void;
+}
 
 export class TodoFormPresenter implements PresentableTodoForm {
   public readonly task;
@@ -11,6 +17,6 @@ export class TodoFormPresenter implements PresentableTodoForm {
   }
 
   public readonly submitTask = () => {
-    this.todoForm.submitTask.publish(this.task.getState());
+    this.todoForm.submitTask.next(this.task.getValue());
   };
 }

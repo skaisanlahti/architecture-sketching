@@ -1,7 +1,10 @@
-import { SubscriptionHandler } from "../../library/SubscriptionHandler";
+import { StorageService } from "../../infrastructure/StorageService";
+import { SubscriptionHandler } from "../utils/SubscriptionHandler";
+import { TodoItem } from "./TodoItem";
+import { ObservableTodoList } from "./TodoListSource";
 import { defaultTodos } from "./data";
-import { ObservableTodoList } from "./interfaces/ObservableTodoList";
-import { TodoStorage } from "./interfaces/TodoStorage";
+
+export type TodoStorage = StorageService<TodoItem[]>;
 
 export class TodoListStorageHandler extends SubscriptionHandler {
   public constructor(
@@ -21,9 +24,9 @@ export class TodoListStorageHandler extends SubscriptionHandler {
   private loadTodos() {
     const todos = this.storage.load();
     if (todos !== undefined && todos.length > 0) {
-      this.todoList.todos.setState(todos);
+      this.todoList.todos.next(todos);
     } else {
-      this.todoList.todos.setState(defaultTodos);
+      this.todoList.todos.next(defaultTodos);
     }
   }
 }

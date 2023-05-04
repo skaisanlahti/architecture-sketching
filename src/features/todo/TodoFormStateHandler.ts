@@ -1,8 +1,8 @@
-import { SubscriptionHandler } from "../../library/SubscriptionHandler";
+import { SubscriptionHandler } from "../utils/SubscriptionHandler";
 import { createId } from "../utils/createId";
-import { ObservableTodoForm } from "./interfaces/ObservableTodoForm";
-import { ObservableTodoList } from "./interfaces/ObservableTodoList";
+import { ObservableTodoForm } from "./TodoFormSource";
 import { TodoItem } from "./TodoItem";
+import { ObservableTodoList } from "./TodoListSource";
 
 export class TodoFormStateHandler extends SubscriptionHandler {
   public constructor(
@@ -14,28 +14,27 @@ export class TodoFormStateHandler extends SubscriptionHandler {
 
   protected handleClearErrors() {
     return this.todoForm.task.subscribe(() => {
-      if (this.todoForm.taskError.getState() !== "") {
-        this.todoForm.taskError.setState("");
-      }
+      if (this.todoForm.taskError.getValue() === "") return;
+      this.todoForm.taskError.next("");
     });
   }
 
   protected handleSubmitTodo() {
     return this.todoForm.submitTask.subscribe((task) => {
       if (task.length === 0) {
-        this.todoForm.taskError.setState("Task can't be empty.");
+        this.todoForm.taskError.next("Task can't be empty.");
         return;
       }
 
       if (task.length > 20) {
-        this.todoForm.taskError.setState("Task too long.");
+        this.todoForm.taskError.next("Task too long.");
         return;
       }
 
       const newTodo: TodoItem = { id: createId(), task, done: false };
-      this.todoList.addTodo.publish(newTodo);
-      this.todoForm.task.setState("");
-      this.todoForm.taskError.setState("");
+      this.todoList.addTodo.next(newTodo);
+      this.todoForm.task.next("");
+      this.todoForm.taskError.next("");
     });
   }
 }

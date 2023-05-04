@@ -1,5 +1,12 @@
-import { ObservableTodoList } from "./interfaces/ObservableTodoList";
-import { PresentableTodoList } from "./interfaces/PresentableTodoList";
+import { BehaviorSubject } from "rxjs";
+import { TodoItem } from "./TodoItem";
+import { ObservableTodoList } from "./TodoListSource";
+
+export interface PresentableTodoList {
+  todos: BehaviorSubject<TodoItem[]>;
+  removeTodo: (id: string) => void;
+  toggleDone: (id: string) => void;
+}
 
 export class TodoListPresenter implements PresentableTodoList {
   public readonly todos;
@@ -9,10 +16,10 @@ export class TodoListPresenter implements PresentableTodoList {
   }
 
   public readonly removeTodo = (id: string) => {
-    this.todoList.removeTodo.publish(id);
+    this.todoList.removeTodo.next(id);
   };
 
   public readonly toggleDone = (id: string) => {
-    this.todoList.toggleDone.publish(id);
+    this.todoList.toggleDone.next(id);
   };
 }

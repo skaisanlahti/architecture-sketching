@@ -1,15 +1,15 @@
 import { StorageService } from "../infrastructure/StorageService";
 import { PresentableApplication } from "./PresentableApplication";
 import { CounterPresenter } from "./counter/CounterPresenter";
+import { CounterSource } from "./counter/CounterSource";
 import { CounterStateHandler } from "./counter/CounterStateHandler";
 import { CounterStorageHandler } from "./counter/CounterStorageHandler";
-import { RxCounter } from "./counter/RxCounter";
-import { RxTodoForm } from "./todo/RxTodoForm";
-import { RxTodoList } from "./todo/RxTodoList";
 import { TodoFormPresenter } from "./todo/TodoFormPresenter";
+import { TodoFormSource } from "./todo/TodoFormSource";
 import { TodoFormStateHandler } from "./todo/TodoFormStateHandler";
 import { TodoItem } from "./todo/TodoItem";
 import { TodoListPresenter } from "./todo/TodoListPresenter";
+import { TodoListSource } from "./todo/TodoListSource";
 import { TodoListStateHandler } from "./todo/TodoListStateHandler";
 import { TodoListStorageHandler } from "./todo/TodoListStorageHandler";
 
@@ -19,9 +19,9 @@ export function createApplication() {
   const todoStorage = new StorageService<TodoItem[]>("todos");
 
   // observables
-  const counter = new RxCounter();
-  const todoList = new RxTodoList();
-  const todoForm = new RxTodoForm();
+  const counter = new CounterSource();
+  const todoList = new TodoListSource();
+  const todoForm = new TodoFormSource();
 
   // event handlers
   const counterStateHandler = new CounterStateHandler(counter);

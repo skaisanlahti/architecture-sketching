@@ -1,6 +1,6 @@
-import { PresentableCounter } from "./counter/interfaces/PresentableCounter";
-import { PresentableTodoForm } from "./todo/interfaces/PresentableTodoForm";
-import { PresentableTodoList } from "./todo/interfaces/PresentableTodoList";
+import { PresentableCounter } from "./counter/CounterPresenter";
+import { PresentableTodoForm } from "./todo/TodoFormPresenter";
+import { PresentableTodoList } from "./todo/TodoListPresenter";
 
 export interface PresentableApplication {
   todoList: PresentableTodoList;

@@ -1,5 +1,5 @@
 import { createContext, useContext, useSyncExternalStore } from "react";
-import { ObservableState } from "../../library/interfaces/ObservableState";
+import { BehaviorSubject } from "rxjs";
 import { PresentableApplication } from "../PresentableApplication";
 
 function createContextProvider<TContext>() {
@@ -20,17 +20,20 @@ function createContextProvider<TContext>() {
   return [useContextValue, context.Provider, context.Consumer] as const;
 }
 
-export const [useViewContext, ViewContextProvider, ViewContextConsumer] =
+export const [useAppContext, ViewContextProvider, ViewContextConsumer] =
   createContextProvider<PresentableApplication>();
 
-function subscribe<TState>(state: ObservableState<TState>) {
-  return (onStoreChange: () => void) => state.subscribe(onStoreChange);
+function subscribe<TState>(state: BehaviorSubject<TState>) {
+  return (onStoreChange: () => void) => {
+    const subscription = state.subscribe(onStoreChange);
+    return () => subscription.unsubscribe();
+  };
 }
 
-function getSnapshot<TState>(state: ObservableState<TState>) {
-  return () => state.getState();
+function getSnapshot<TState>(state: BehaviorSubject<TState>) {
+  return () => state.getValue();
 }
 
-export function useObservableState<TValue>(state: ObservableState<TValue>) {
+export function useBehavior<TState>(state: BehaviorSubject<TState>) {
   return useSyncExternalStore(subscribe(state), getSnapshot(state));
 }

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { View } from "./features/View.tsx";
 import { createApplication } from "./features/createApplication.ts";
 import { ViewContextProvider } from "./features/utils/react-adapter.ts";
-import "./styles.css";
+import "./styles/main.scss";
 
 const app = createApplication();
 

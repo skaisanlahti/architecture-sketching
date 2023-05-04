@@ -1,0 +1,21 @@
+.counter {
+  font-size: 1rem;
+
+  & > * {
+    margin-bottom: 1rem;
+  }
+
+  &_count {
+    font-size: 3rem;
+  }
+
+  &_button {
+    font-size: 1.5rem;
+  }
+
+  &_actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+}

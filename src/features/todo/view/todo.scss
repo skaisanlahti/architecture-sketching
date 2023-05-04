@@ -1,0 +1,39 @@
+.todo-form {
+  margin-bottom: 1rem;
+
+  &_input {
+    font-size: 1.25rem;
+  }
+
+  &_error {
+    margin-top: 0.25rem;
+    color: red;
+  }
+
+  &_submit {
+    margin-top: 1rem;
+  }
+}
+
+.todo-list {
+  &_list {
+    width: 800px;
+    margin: auto;
+    text-align: left;
+  }
+
+  &_item {
+    display: grid;
+    grid-template-columns: 4fr 1fr 1fr;
+    gap: 1rem;
+    padding: 0.25rem;
+
+    &[aria-checked="true"] {
+      color: green;
+    }
+
+    &[aria-checked="false"] {
+      color: red;
+    }
+  }
+}

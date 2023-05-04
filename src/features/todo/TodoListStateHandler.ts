@@ -1,6 +1,6 @@
-import { SubscriptionHandler } from "../../library/SubscriptionHandler";
-import { ObservableTodoList } from "./interfaces/ObservableTodoList";
+import { SubscriptionHandler } from "../utils/SubscriptionHandler";
 import { TodoItem } from "./TodoItem";
+import { ObservableTodoList } from "./TodoListSource";
 
 export class TodoListStateHandler extends SubscriptionHandler {
   public constructor(private readonly todoList: ObservableTodoList) {
@@ -9,15 +9,15 @@ export class TodoListStateHandler extends SubscriptionHandler {
 
   protected handleAddTodo() {
     return this.todoList.addTodo.subscribe((newTodo) => {
-      this.todoList.todos.updateState((todos) => [...todos, newTodo]);
+      const todos = this.todoList.todos.getValue();
+      this.todoList.todos.next([...todos, newTodo]);
     });
   }
 
   protected handleRemoveTodo() {
     return this.todoList.removeTodo.subscribe((id) => {
-      this.todoList.todos.updateState((todos) =>
-        todos.filter((t) => t.id !== id)
-      );
+      const todos = this.todoList.todos.getValue();
+      this.todoList.todos.next(todos.filter((t) => t.id !== id));
     });
   }
 
@@ -26,7 +26,8 @@ export class TodoListStateHandler extends SubscriptionHandler {
       return todo.id === id ? { ...todo, done: !todo.done } : todo;
     };
     return this.todoList.toggleDone.subscribe((id) => {
-      this.todoList.todos.updateState((todos) => todos.map(toggle(id)));
+      const todos = this.todoList.todos.getValue();
+      this.todoList.todos.next(todos.map(toggle(id)));
     });
   }
 }
